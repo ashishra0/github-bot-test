@@ -1,14 +1,15 @@
 import WebhooksApi from '@octokit/webhooks';
 import octokitLib from '@octokit/rest';
 import fetch from 'node-fetch';
+import eventPayload from './fn';
 
 import pullRequestHandler from './pull_request';
 
-const WEBHOOK_SECRET = process.env['WEBHOOK_SECRET'];
-const GITHUB_TOKEN = process.env['GITHUB_TOKEN'];
+const WEBHOOK_SECRET = 'abcd';
+const GITHUB_TOKEN = '28e78b4154a7c13cecfa35eaaba127ee8c5a1e37';
 
 const webhooks = new WebhooksApi({
-  secret: WEBHOOK_SECRET || 'mysecret'
+  secret: WEBHOOK_SECRET
 });
 
 const octokit = octokitLib();
@@ -50,15 +51,18 @@ module.exports = (req, res) => {
 
 
 // // uncomment and do node index.js for local development
-// import EventSource from 'eventsource';
-// const webhookProxyUrl = 'https://smee.io/JBPDF4Rxfx5K01x';
-// const source = new EventSource(webhookProxyUrl);
-// source.onmessage = (event) => {
-//   const webhookEvent = JSON.parse(event.data);
-//   webhooks.verifyAndReceive({
-//     id: webhookEvent['x-request-id'],
-//     name: webhookEvent['x-github-event'],
-//     signature: webhookEvent['x-hub-signature'],
-//     payload: webhookEvent.body
-//   }).catch(console.error);
-// };
+import EventSource from 'eventsource';
+const webhookProxyUrl = 'https://smee.io/3oTaVcUoAyekunVC';
+const source = new EventSource(webhookProxyUrl);
+source.onmessage = (event) => {
+  const webhookEvent = JSON.parse(event.data);
+  webhooks.verifyAndReceive({
+    id: webhookEvent['x-request-id'],
+    name: webhookEvent['x-github-event'],
+    signature: webhookEvent['x-hub-signature'],
+    payload: webhookEvent.body
+  }).catch(console.error);
+  eventPayload(webhookEvent);
+};
+
+export default source;
