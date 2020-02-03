@@ -13,8 +13,8 @@ jobs:
     steps:
       - checkout
       - run:
-          name: update-npm
-          command: npm install -g npm@latest
+          name: deploy-app
+          command: .circleci/deploy.sh
 
       - save_cache:
           paths:
