@@ -15,7 +15,7 @@
   "dependencies": {
     "@octokit/rest": "^15.18.3",
     "@octokit/webhooks": "^5.0.2",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "circleci-api": "^4.0.0",
     "es6-promise": "^4.2.8",
     "esm": "^3.2.25",
